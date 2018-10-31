@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -40,6 +41,10 @@ public class VistaController implements Initializable {
     private TableColumn<Persona, String> telefonoCL;
     @FXML
     private TableColumn<Persona, String> ciudadCL;
+    @FXML
+    private RadioButton masculinoRB;
+    @FXML
+    private RadioButton femeninoRB;
 
     private final ObservableList<Persona> personas = FXCollections.observableArrayList();//Almacena los datos en forma de Lista de arreglos//
 
@@ -66,7 +71,15 @@ public class VistaController implements Initializable {
     private Button nuevoBT;
     @FXML
     private TextField BuscarTF;
-
+    @FXML
+    private void tablaPersonas(ActionEvent event){
+         Persona persona = new Persona();
+        persona.setNombre(nombreTF.getText());//lo que haya en el nombreTF que me lo traiga como texto(getText) y lo ponga en el atributo nombre
+        persona.setApellido(apellidoTF.getText());
+        persona.setCi(Integer.parseInt(ciTF.getText()));//en vez de getText se usa parseInt para valores entero//
+        persona.setTelefono(telefonoTF.getText());
+        persona.setCiudad(ciudadTF.getText());
+    }
     @FXML
     private void aniadir(ActionEvent event) {
         Persona persona = new Persona();
@@ -86,7 +99,7 @@ public class VistaController implements Initializable {
         persona.setCi(Integer.parseInt(ciTF.getText()));//en vez de getText se usa parseInt para valores entero//
         persona.setTelefono(telefonoTF.getText());
         persona.setCiudad(ciudadTF.getText());
-        personas.set(posicionPersonaEnTabla, persona);//Se selecciona una fila en la tabla y trae todos los datos guardados de esa fila para poder modificar//
+        Persona set = personas.set(posicionPersonaEnTabla, persona); //Se selecciona una fila en la tabla y trae todos los datos guardados de esa fila para poder modificar//
     }
 
     @FXML
@@ -105,7 +118,7 @@ public class VistaController implements Initializable {
         eliminarBT.setDisable(true);//Disable true (No da la opcion de eliminar)
         aniadirBT.setDisable(false);//Disable false (Da la opcion de añadir)
     }
-    //Para selleccionar una celda en la tablaPersona//
+  
     private final ListChangeListener<Persona> selectorTablaPersonas = new ListChangeListener<Persona>() {
         @Override
         public void onChanged(ListChangeListener.Change<? extends Persona> c) {
@@ -139,10 +152,29 @@ public class VistaController implements Initializable {
             modificarBT.setDisable(false);
             eliminarBT.setDisable(false);
             aniadirBT.setDisable(true);
-
+//            masculinoRB.setDisable(true);
+//            femeninoRB.setDisable(true);
         }
     }
-
+    
+    private void personitas(){
+       Persona persona = new Persona();
+        persona.setNombre("luis");
+        persona.setApellido("mendez");
+        persona.setCi(8765432);
+        persona.setCiudad("coronel oviedo");
+        personas.add(persona);
+        
+    }
+    
+    @FXML
+    private void selectFemeino(){
+        masculinoRB.setSelected(false);
+    }
+    @FXML
+    private void selectMasculino(){
+        femeninoRB.setSelected(false);
+    }
     public void inicializarTablaPersonas() {
         tablaPersonas.setItems(personas);
         nombreCL.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -186,6 +218,7 @@ public class VistaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        this.personitas();
         this.inicializarTablaPersonas();
         modificarBT.setDisable(true);
         eliminarBT.setDisable(true);
